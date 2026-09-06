@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+backend/venv/
+venv/
+ENV/
+env/
+.env
+.pytest_cache/
+
+# Node & Frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+*.local
+.npm
+.eslintcache
+
+# Storage & Temporary Files
+backend/storage/uploads/*
+backend/storage/outputs/*
+backend/storage/temp/*
+!backend/storage/uploads/.gitkeep
+!backend/storage/outputs/.gitkeep
+!backend/storage/temp/.gitkeep
+
+# Operating System & IDEs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test artifact PDFs
+sample_transcript.pdf
+secured_transcript.pdf
+tampered_transcript.pdf
