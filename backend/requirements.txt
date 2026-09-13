@@ -8,3 +8,5 @@ qrcode[pil]>=7.4.2,<9.0.0
 opencv-python-headless>=4.9.0.80
 pillow>=10.2.0,<11.0.0
 numpy>=1.26.0,<3.0.0
+scipy>=1.11.0,<2.0.0
+scikit-image>=0.22.0,<1.0.0

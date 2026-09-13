@@ -1,0 +1,37 @@
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+INFO:     127.0.0.1:56906 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56447 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63902 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63902 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49687 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49687 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54151 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54151 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49687 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49687 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54575 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61843 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61865 - "OPTIONS /api/v1/generate/secure-pdf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61865 - "POST /api/v1/generate/secure-pdf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62072 - "GET /api/v1/generate/download/1789282432_dsp6print_secured.pdf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60181 - "OPTIONS /api/v1/verify/verify-pdf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60181 - "POST /api/v1/verify/verify-pdf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60181 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51385 - "GET /api/v1/health HTTP/1.1" 200 OK
+ INFO:     127.0.0.1:64578 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64588 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64650 - "POST /api/v1/generate/secure-pdf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64651 - "GET /api/v1/generate/download/1789282917_sample_transcript_secured.pdf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64652 - "POST /api/v1/verify/verify-pdf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64653 - "POST /api/v1/verify/verify-pdf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64654 - "POST /api/v1/verify/verify-pdf HTTP/1.1" 200 OK
+ warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+ INFO:     127.0.0.1:58297 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58301 - "POST /api/v1/generate/secure-pdf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58303 - "GET /api/v1/generate/download/1789283083_sample_transcript_secured.pdf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58304 - "POST /api/v1/verify/verify-pdf HTTP/1.1" 200 OK
+ warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+INFO:     127.0.0.1:58305 - "POST /api/v1/verify/verify-pdf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58312 - "POST /api/v1/verify/verify-pdf HTTP/1.1" 200 OK
