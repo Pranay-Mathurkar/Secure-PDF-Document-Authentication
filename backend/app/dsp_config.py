@@ -19,6 +19,25 @@ DSP_CONFIG = MappingProxyType({
     "difference_threshold": 30,
     "tampering_threshold": 0.15,
     "minimum_region_area": 100,
+    "fft_low_frequency_ratio": 0.10,
+    "dct_low_frequency_ratio": 0.10,
+    "dct_mid_frequency_ratio": 0.30,
+    "canny_lower_threshold": 50,
+    "canny_upper_threshold": 150,
+    "tamper_morphology_kernel_size": 3,
+    "tamper_morphology_iterations": 1,
+    "tamper_alignment_max_shift": 10.0,
+    "authentication_weights": {
+        "hash": 0.40,
+        "ssim": 0.25,
+        "fft": 0.15,
+        "dct": 0.10,
+        "edge": 0.10,
+    },
+    "authentication_rendering_threshold": 90.0,
+    "authentication_suspicious_threshold": 70.0,
+    "authentication_significant_threshold": 45.0,
+    "authentication_tampering_percentage_threshold": 5.0,
 })
 
 

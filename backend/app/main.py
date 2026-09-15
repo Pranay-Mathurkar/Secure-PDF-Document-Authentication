@@ -6,11 +6,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.routers import generate, verify
 from app.schemas.response_models import HealthResponse
 
+settings.init_storage()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -35,6 +37,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_ORIGINS,
+    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -43,6 +46,16 @@ app.add_middleware(
 # Mount Routers
 app.include_router(generate.router, prefix=settings.API_PREFIX)
 app.include_router(verify.router, prefix=settings.API_PREFIX)
+app.mount(
+    f"{settings.API_PREFIX}/visual-results",
+    StaticFiles(directory=settings.OUTPUT_DIR),
+    name="visual-results",
+)
+app.mount(
+    f"{settings.API_PREFIX}/forensic-results",
+    StaticFiles(directory=settings.FORENSIC_RESULTS_DIR),
+    name="forensic-results",
+)
 
 
 @app.get("/", tags=["System Information"])

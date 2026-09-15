@@ -15,6 +15,7 @@ import { verifyPdf } from '../services/api';
 
 export default function Verify() {
   const [file, setFile] = useState(null);
+  const [originalFile, setOriginalFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [result, setResult] = useState(null);
@@ -41,7 +42,7 @@ export default function Verify() {
     setUploadProgress(0);
 
     try {
-      const data = await verifyPdf(file, (progress) => {
+      const data = await verifyPdf(file, originalFile, (progress) => {
         setUploadProgress(progress);
       });
       setResult(data);
@@ -56,6 +57,7 @@ export default function Verify() {
 
   const handleReset = () => {
     setFile(null);
+    setOriginalFile(null);
     setResult(null);
     setError('');
     setUploadProgress(0);
@@ -74,7 +76,9 @@ export default function Verify() {
         </h1>
         <p className="text-sm text-slate-500 max-w-xl mx-auto">
           Upload a secured 2-page PDF. The system extracts the stored cryptographic hash from Page 2's QR code
-          and checks it against a newly calculated canonical hash of Page 1.
+          and checks it against a newly calculated canonical hash of Page 1. For DSP comparison, upload the
+          generated secured PDF after editing it; do not generate a new secured PDF from the edited source,
+          because that creates a new reference document ID.
         </p>
       </div>
 
@@ -117,6 +121,20 @@ export default function Verify() {
                 helperText="Must contain at least 2 pages (Protected content + QR Authentication page)"
               />
 
+              <div className="border-t border-slate-200 pt-5">
+                <FileUpload
+                  selectedFile={originalFile}
+                  onFileSelect={(selected) => {
+                    setOriginalFile(selected);
+                    setError('');
+                  }}
+                  title="Optional: Select Original PDF for DSP Analysis"
+                  description="Add the unmodified source to compare structure, frequency, edges, and tampering."
+                  helperText="Leave empty to use the existing SHA-256 and QR verification workflow"
+                  inputId="original-pdf-file-input"
+                />
+              </div>
+
               <div className="flex items-center justify-between pt-2">
                 <div className="text-xs text-slate-500">
                   <span className="font-semibold text-slate-700">Checks:</span> Page Count &ge; 2, QR Code Decoding, SHA-256 Digest Match
@@ -132,7 +150,7 @@ export default function Verify() {
                   }`}
                 >
                   <Search className="w-4 h-4" />
-                  <span>Verify Authenticity</span>
+                  <span>{originalFile ? 'Verify with DSP Analysis' : 'Verify Authenticity'}</span>
                 </button>
               </div>
             </form>

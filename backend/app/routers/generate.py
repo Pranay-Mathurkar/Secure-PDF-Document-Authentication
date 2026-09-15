@@ -3,6 +3,7 @@ Document Generation Router.
 Handles PDF uploading, deterministic canonical hashing, QR code creation, and secured PDF downloading.
 """
 from datetime import datetime, timezone
+import json
 from pathlib import Path
 import re
 import fitz
@@ -10,7 +11,8 @@ from fastapi import APIRouter, UploadFile, File, HTTPException, status
 from fastapi.responses import FileResponse
 
 from app.config import settings
-from app.services.hash_service import compute_canonical_page_hash
+from app.services.hash_record_service import create_hash_record, finalize_hash_record
+from app.services.dsp_reference_service import store_reference_page
 from app.services.qr_service import generate_qr_image_bytes
 from app.services.pdf_service import assemble_secured_pdf
 from app.schemas.response_models import DocumentGenerationResponse
@@ -53,10 +55,12 @@ async def generate_secured_pdf(file: UploadFile = File(...)):
             detail=f"Uploaded file is corrupted or not a valid PDF document: {str(e)}"
         )
 
-    # 1. Extract Page 1 and compute deterministic canonical hash
+    # 1. Create independent hash record and DSP reference for Page 1.
     try:
         first_page = doc[0]
-        sha256_hash = compute_canonical_page_hash(first_page)
+        record = create_hash_record(pdf_bytes, first_page)
+        sha256_hash = record["canonical_page1_sha256"]
+        store_reference_page(record["document_id"], first_page)
     except Exception as e:
         doc.close()
         raise HTTPException(
@@ -72,7 +76,14 @@ async def generate_secured_pdf(file: UploadFile = File(...)):
     timestamp_iso = now_utc.isoformat()
 
     # 3. Generate QR code PNG
-    qr_png_bytes = generate_qr_image_bytes(sha256_hash)
+    qr_payload = json.dumps({
+        "document_id": record["document_id"],
+        "hash": sha256_hash,
+        "algorithm": settings.HASH_ALGORITHM,
+        "dpi": settings.CANONICAL_DPI,
+        "version": "1",
+    }, separators=(",", ":"))
+    qr_png_bytes = generate_qr_image_bytes(qr_payload)
 
     # 4. Assemble 2-page secured PDF
     try:
@@ -88,6 +99,7 @@ async def generate_secured_pdf(file: UploadFile = File(...)):
             status_code=500,
             detail=f"Failed to compile secured PDF: {str(e)}"
         )
+    record = finalize_hash_record(record, secured_pdf_bytes)
 
     # 5. Persist to storage outputs
     settings.OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -107,6 +119,7 @@ async def generate_secured_pdf(file: UploadFile = File(...)):
         algorithm=settings.HASH_ALGORITHM,
         timestamp=timestamp_iso,
         download_url=download_url,
+        document_id=record["document_id"],
     )
 
 

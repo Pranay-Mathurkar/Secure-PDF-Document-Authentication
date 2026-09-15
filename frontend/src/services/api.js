@@ -50,9 +50,12 @@ export const generateSecurePdf = async (file, onProgress) => {
  * @param {File} file - Secured PDF file
  * @param {Function} onProgress - Progress callback (0-100)
  */
-export const verifyPdf = async (file, onProgress) => {
+export const verifyPdf = async (file, originalFile, onProgress) => {
   const formData = new FormData();
   formData.append('file', file);
+  if (originalFile) {
+    formData.append('original_file', originalFile);
+  }
 
   const response = await apiClient.post('/verify/verify-pdf', formData, {
     headers: {

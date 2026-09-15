@@ -8,7 +8,8 @@ export default function FileUpload({
   maxSizeMB = 15,
   title = 'Upload PDF Document',
   description = 'Drag and drop your PDF here, or browse from device',
-  helperText = 'Supported format: PDF up to 15MB'
+  helperText = 'Supported format: PDF up to 15MB',
+  inputId = 'pdf-file-input'
 }) {
   const [isDragOver, setIsDragOver] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -79,7 +80,7 @@ export default function FileUpload({
         onChange={handleFileChange}
         accept={accept}
         className="hidden"
-        id="pdf-file-input"
+        id={inputId}
       />
 
       {!selectedFile ? (

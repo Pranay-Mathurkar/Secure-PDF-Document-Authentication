@@ -97,6 +97,25 @@ This framework decouples document verification from volatile file container stru
 | **MODIFIED** | Crimson / Orange | `Original Hash != Calculated Hash` | Tampering detected. Even a single character or pixel changed. |
 | **INVALID** | Red | `Page Count < 2` or `No QR Detected` | Document lacks authentication page or barcode is unreadable. |
 
+## Independent Hash and DSP Pipelines
+
+Generation assigns a unique `document_id` and writes separate records:
+
+```text
+backend/storage/
+├── hash_records/<document_id>.json
+├── dsp_references/<document_id>/page1_reference.png
+└── forensic_results/<document_id>/
+```
+
+The hash pipeline performs SHA-256 verification and QR metadata handling only.
+The DSP pipeline retrieves the persisted canonical Page 1 reference and performs
+preprocessing, SSIM, FFT, DCT, edge, difference, and contour analysis. The
+verification endpoint orchestrates both pipelines and returns independent
+`hash_analysis` and `dsp_analysis` objects. Legacy QR payloads containing only a
+raw hash remain supported; those documents can still use the optional
+`original_file` DSP comparison path.
+
 ---
 
 ## Installation & Setup

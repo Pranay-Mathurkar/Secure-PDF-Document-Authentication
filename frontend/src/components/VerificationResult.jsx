@@ -11,6 +11,7 @@ import {
   Binary,
   Layers
 } from 'lucide-react';
+import DSPAnalysisDashboard from './DSPAnalysisDashboard';
 
 export default function VerificationResult({ result, onReset }) {
   const [copiedField, setCopiedField] = useState(null);
@@ -21,7 +22,9 @@ export default function VerificationResult({ result, onReset }) {
   const statusUpper = (result.status_text || '').toUpperCase();
   let statusType = 'INVALID';
 
-  if (result.is_authentic || statusUpper.includes('AUTHENTIC')) {
+  if (['SUSPICIOUS', 'SIGNIFICANTLY_TAMPERED'].includes(result.authentication?.status)) {
+    statusType = result.authentication.status;
+  } else if (result.is_authentic || statusUpper.includes('AUTHENTIC')) {
     statusType = 'AUTHENTIC';
   } else if (statusUpper.includes('MODIFIED')) {
     statusType = 'MODIFIED';
@@ -53,6 +56,22 @@ export default function VerificationResult({ result, onReset }) {
       subtitle: 'Tampering detected! The calculated first-page hash does NOT match the stored QR code.',
       accentBorder: 'border-orange-500',
       tagColor: 'bg-orange-600 text-white',
+    },
+    SUSPICIOUS: {
+      badgeBg: 'bg-amber-50 border-amber-300 text-amber-800',
+      icon: <ShieldAlert className="w-10 h-10 text-amber-600" />,
+      title: 'SUSPICIOUS DOCUMENT',
+      subtitle: 'The cryptographic or DSP layers require further review.',
+      accentBorder: 'border-amber-500',
+      tagColor: 'bg-amber-600 text-white',
+    },
+    SIGNIFICANTLY_TAMPERED: {
+      badgeBg: 'bg-rose-50 border-rose-300 text-rose-800',
+      icon: <AlertOctagon className="w-10 h-10 text-rose-600" />,
+      title: 'SIGNIFICANTLY TAMPERED',
+      subtitle: 'The DSP analysis localized substantial differences in the document.',
+      accentBorder: 'border-rose-500',
+      tagColor: 'bg-rose-600 text-white',
     },
     INVALID: {
       badgeBg: 'bg-rose-50 border-rose-300 text-rose-800',
@@ -169,6 +188,9 @@ export default function VerificationResult({ result, onReset }) {
             )}
           </div>
         </div>
+
+        {/* Action Button */}
+        <DSPAnalysisDashboard result={result} />
 
         {/* Action Button */}
         {onReset && (

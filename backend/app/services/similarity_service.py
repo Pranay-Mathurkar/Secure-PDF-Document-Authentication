@@ -129,11 +129,25 @@ def calculate_ssim(reference_image: np.ndarray, candidate_image: np.ndarray) -> 
         raise DSPProcessingError(f"Failed to calculate SSIM: {exc}") from exc
 
 
-def compare_images(reference_image: np.ndarray, candidate_image: np.ndarray) -> dict:
+def compare_images(
+    reference_image: np.ndarray,
+    candidate_image: np.ndarray,
+    preprocess: bool = True,
+) -> dict:
     """
     Compare two document images and return MSE, PSNR, and SSIM metrics.
     """
-    reference, candidate = validate_similarity_inputs(reference_image, candidate_image)
+    if preprocess:
+        reference, candidate = validate_similarity_inputs(reference_image, candidate_image)
+    else:
+        validate_image_array(reference_image, "reference image")
+        validate_image_array(candidate_image, "candidate image")
+        if reference_image.shape != candidate_image.shape:
+            raise DSPProcessingError(
+                "reference image and candidate image must have identical dimensions."
+            )
+        reference = np.clip(reference_image, 0, 255).astype(np.uint8, copy=False)
+        candidate = np.clip(candidate_image, 0, 255).astype(np.uint8, copy=False)
 
     try:
         difference = reference.astype(np.float64) - candidate.astype(np.float64)

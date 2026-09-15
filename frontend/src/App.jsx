@@ -9,7 +9,12 @@ import About from './pages/About';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       <div className="flex flex-col min-h-screen bg-[#f8fafc] text-slate-900 font-sans">
         <Navbar />
         <main className="flex-1">

@@ -62,6 +62,8 @@ def verify_secured_pdf(pdf_bytes: bytes, filename: str) -> dict:
     try:
         qr_payload = decode_qr_from_page(page_2)
         original_hash = extract_hash_from_qr_payload(qr_payload).lower()
+        from app.services.qr_service import extract_document_id_from_qr_payload
+        document_id = extract_document_id_from_qr_payload(qr_payload)
     except Exception as e:
         doc.close()
         return {
@@ -73,6 +75,7 @@ def verify_secured_pdf(pdf_bytes: bytes, filename: str) -> dict:
             "verification_timestamp": verification_time,
             "page_count": page_count,
             "details": f"Failed to detect or decode QR code on Page 2: {str(e)}",
+            "document_id": None,
         }
 
     doc.close()
@@ -96,4 +99,6 @@ def verify_secured_pdf(pdf_bytes: bytes, filename: str) -> dict:
         "verification_timestamp": verification_time,
         "page_count": page_count,
         "details": details,
+        "document_id": document_id,
+        "qr_payload": qr_payload,
     }

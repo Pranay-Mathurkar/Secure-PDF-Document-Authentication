@@ -109,3 +109,15 @@ def extract_hash_from_qr_payload(payload: str) -> str:
 
     # Fallback to returning raw payload
     return cleaned
+
+
+def extract_document_id_from_qr_payload(payload: str) -> str | None:
+    """Extract a persisted document ID from a structured QR payload."""
+    try:
+        data = json.loads(payload.strip())
+    except (TypeError, ValueError, json.JSONDecodeError):
+        return None
+    if not isinstance(data, dict):
+        return None
+    value = data.get("document_id")
+    return str(value) if value else None

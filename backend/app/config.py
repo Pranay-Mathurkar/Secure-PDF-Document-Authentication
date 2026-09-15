@@ -22,6 +22,8 @@ class Settings(BaseSettings):
     CORS_ORIGINS: List[str] = [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
+        "http://localhost:5174",
+        "http://127.0.0.1:5174",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
     ]
@@ -32,6 +34,12 @@ class Settings(BaseSettings):
     UPLOAD_DIR: Path = STORAGE_DIR / "uploads"
     OUTPUT_DIR: Path = STORAGE_DIR / "outputs"
     TEMP_DIR: Path = STORAGE_DIR / "temp"
+    HASH_RECORD_DIR: Path = STORAGE_DIR / "hash_records"
+    DSP_REFERENCE_DIR: Path = STORAGE_DIR / "dsp_references"
+    FORENSIC_RESULTS_DIR: Path = STORAGE_DIR / "forensic_results"
+    # Plural aliases mirror the on-disk module boundaries.
+    HASH_RECORDS_DIR: Path = STORAGE_DIR / "hash_records"
+    DSP_REFERENCES_DIR: Path = STORAGE_DIR / "dsp_references"
 
     # Cryptographic & Canonical Rasterization Parameters
     HASH_ALGORITHM: str = "SHA-256"
@@ -48,7 +56,17 @@ class Settings(BaseSettings):
 
     def init_storage(self) -> None:
         """Create storage directories if they do not exist."""
-        for directory in [self.STORAGE_DIR, self.UPLOAD_DIR, self.OUTPUT_DIR, self.TEMP_DIR]:
+        for directory in [
+            self.STORAGE_DIR,
+            self.UPLOAD_DIR,
+            self.OUTPUT_DIR,
+            self.TEMP_DIR,
+            self.HASH_RECORD_DIR,
+            self.DSP_REFERENCE_DIR,
+            self.FORENSIC_RESULTS_DIR,
+            self.HASH_RECORDS_DIR,
+            self.DSP_REFERENCES_DIR,
+        ]:
             directory.mkdir(parents=True, exist_ok=True)
 
 

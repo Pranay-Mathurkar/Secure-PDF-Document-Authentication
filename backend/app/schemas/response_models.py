@@ -22,6 +22,7 @@ class DocumentGenerationResponse(BaseApiResponse):
     algorithm: str = "SHA-256"
     timestamp: str
     download_url: str
+    document_id: Optional[str] = None
 
 
 class DocumentVerificationResponse(BaseApiResponse):
@@ -34,3 +35,14 @@ class DocumentVerificationResponse(BaseApiResponse):
     verification_timestamp: str
     page_count: int
     details: Optional[str] = None
+    authentication: Optional[dict] = None
+    hash: Optional[dict] = None
+    similarity: Optional[dict] = None
+    frequency_analysis: Optional[dict] = None
+    edge_analysis: Optional[dict] = None
+    tampering: Optional[dict] = None
+    pages: Optional[list[dict]] = None
+    visual_results: Optional[dict] = None
+    hash_analysis: Optional[dict] = None
+    dsp_analysis: Optional[dict] = None
+    dsp_analysis_available: bool = False
